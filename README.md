@@ -27,3 +27,14 @@ Prototype:
 	- Need to implement
 		- Facebook
 		- Instagram
+		- 
+File Descriptions:
+
+	-index.html
+		-This is the front end of the web app. It essentially holds a static nav-bar div from Twitter's Bootstrap
+		which contains a form input for querying into the Eventful API. 
+		-Below that is a div clas="map" that acts as the container for the map. It's empty because the mapbox.js
+		in /js automatically generates the map within the div when the page loads.
+		
+	-/js/scripts.js
+		-This holds a single function that runs upon the page loading
