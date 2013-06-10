@@ -1,0 +1,24 @@
+@charset "UTF-8";
+/* CSS Document */
+
+.navbar {
+	z-index:100;	
+}
+
+
+.map {
+    position: absolute;
+    height: 93.8%;
+    width: 100%;
+	z-index:50;
+}
+
+/*Use the mobile version when the width is < 768px*/
+@media screen and (max-width: 768px) {
+    .desktop {display:none !important;}
+}
+
+/*Use desktop version of image carousel when width > 769px*/
+@media screen and (min-width: 769px) {
+    .mobile {display:none !important;}
+}
