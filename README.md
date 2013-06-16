@@ -40,9 +40,17 @@ File Descriptions:
 		- This holds a single function that runs upon the page loading.
 		- It initializes the map using the mapbox api and sets the view to some location in New Jersey.
 			- It then creates what's called in the Leaflet/Mapbox api as a layer. I called it "userLocLayer."
-			- It's a dedicated layer for a marker we place for the user location. When a user enters a query and then decides to enter another query, we need to delete all of the current markers except the user location marker. We can simply choose to delete a layer instead of deleting all markers, which is what the eventslayer is for.
+			- It's a dedicated layer for a marker we place for the user location. When a user enters a query 
+			  and then decides to enter another query, we need to delete all of the current markers except 
+			  the user location marker. We can simply choose to delete a layer instead of deleting all 
+			  markers, which is what the eventslayer is for.
 			- We then initialize a mapbox geocoder to obtain the user location.
 			- Then we add a UI control for the user to zoom in and out
 			- The geocoder then attempts to look for the user's location.
-		- Currently we only have one piece of UI (The search bar). So we bind a function whenever a user presses the 'enter' key on the search bar.
-			- First, it removes the focus off of the search bar (blur), then zooms the map out. It then prevents any default behavior of the search bar upon an enter key press from happening. Then it clears the events layer to remove any previous event markers. Then it calls the Eventful API to retrieve event data based on the input of the search bar. Upon getting it in JSON format, we retrieve the latitute and longitude and plot them on our map using the eventslayer.
+		- Currently we only have one piece of UI (The search bar). So we bind a function whenever a user presses 
+		  the 'enter' key on the search bar.
+			- First, it removes the focus off of the search bar (blur), then zooms the map out. It then 
+			  prevents any default behavior of the search bar upon an enter key press from happening. Then it
+			  clears the events layer to remove any previous event markers. Then it calls the Eventful API to
+  			  retrieve event data based on the input of the search bar. Upon getting it in JSON format, we 
+			  retrieve the latitute and longitude and plot them on our map using the eventslayer.
