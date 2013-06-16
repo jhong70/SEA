@@ -26,11 +26,14 @@ $(document).ready(function() {
 				iconUrl: 'http://www.prism.gatech.edu/~jhong70/sea/img/markers/user-marker.png',
 				iconAnchor: [12,41]
 			});
-			L.marker([e.latlng.lat, e.latlng.lng], {icon: userIcon}).addTo(map);
+			//Create and bind popup
+			var popupContent = "You are here!";
+			L.marker([e.latlng.lat, e.latlng.lng], {icon: userIcon}).bindPopup(popupContent,{offset: new L.Point(0,-15)}).addTo(map).openPopup();
 		});
 		
 		map.on('locationerror', function(e) {
 			console.log(e);
+			alert('Could not track your location');
 		});
 
 		//Upon pressing enter while search bar is focused, do a search and move the map accordingly
@@ -39,7 +42,7 @@ $(document).ready(function() {
 				$('#searchInput').blur();
 				map.setZoom(12);
 				e.preventDefault();
-				eventsLayer .clearLayers();
+				eventsLayer.clearLayers();
 				var oArgs = { app_key: "sj98RZjS2GJJGhhH", keywords: $('#searchInput').val(), page_size: 200, location:latlng, within:5}; 
 				EVDB.API.call("/events/search", oArgs, function(oData) {
 					console.log(oData.total_items);
@@ -47,7 +50,7 @@ $(document).ready(function() {
 					for (i=0;i<((oData.total_items<200) ? oData.total_items : 200);i++){
 						try{
 							var evIcon = L.icon({
-								iconUrl: 'http://www.prism.gatech.edu/~jhong70/sea/img/markers/user-marker.png',
+								iconUrl: 'http://www.prism.gatech.edu/~jhong70/sea/img/markers/event-marker.png',
 								iconAnchor: [12,41]
 							});
 							L.marker([oData.events.event[i].latitude, oData.events.event[i].longitude], {icon: evIcon}).addTo(eventsLayer);
