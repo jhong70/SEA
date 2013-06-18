@@ -1,24 +1,122 @@
 @charset "UTF-8";
 /* CSS Document */
 
-.navbar {
-	z-index:100;	
+/*Global font-family. Need to apply our font where we want them in jQuery mobile UI elements.*/
+body .ui-body-c, .ui-body-c input, .ui-body-c select, .ui-body-c textarea, .ui-body-c button, .ui-bar-b, .ui-body-a, .ui-btn-up-b, .ui-btn-hover-b, .ui-btn-down-b {
+   font-family: "Ubuntu"; 
+}
+
+html, body {
+	height:100%;	
+}
+
+#wrapper {
+    min-height: 100%;
+    height:     auto !important;
+    height:     100%;
 }
 
 
-.map {
-    position: absolute;
-    height: 93.8%;
-    width: 100%;
-	z-index:50;
+/* Navigational/Search bar */
+.nav-bar {
+	width:100%;
+	z-index:100;
 }
 
-/*Use the mobile version when the width is < 768px*/
-@media screen and (max-width: 768px) {
+.nav-bar > .brand {
+	font-size:22px;	
+	padding-right:10px;
+}
+
+.nav-bar > #search {
+	width:60%;
+	display:inline-block;
+}
+
+.nav-bar > .nav-button {
+	display:inline-block;
+	float:right;	
+}
+
+
+/*Page contents*/
+.ui-content {
+	padding:0px !important;
+}
+
+#map {
+	position:fixed;
+	width:100%;
+	height:100%;
+}
+
+/*Panels (list panel and nav panel) */
+#panel {
+	padding-top:55px;
+	width:50em;
+	z-index:1;
+	max-height:100%;
+	height:auto !important;
+	height:100%;
+}
+
+.ui-panel-inner {
+   
+}
+
+#panel-result{
+	 height:500px;
+	overflow-y:scroll;
+}
+
+#nav-panel{
+	background: rgba(73,73,73,.95);
+	text-shadow: 0px 1px 1px #000000;
+}
+
+#nav-panel ul{
+	margin:0;
+	padding:0;
+	width:100%;	
+}
+
+#nav-panel ul li a:link, #nav-panel ul li a:visited{
+	border-bottom:solid #333 1px;
+	color:#fff;
+	font-size:14px;
+	text-decoration:none;
+	width:inherit;
+	display:block;
+	padding:10px 0px 10px 10px; 
+	text-shadow: 0px 1px 1px #000000;
+}
+#nav-panel > .sublist{
+	background-color:#383737;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(30,29,29,1)), color-stop(21%,rgba(56,55,55,1)));
+}
+
+.ui-panel-animate.ui-panel-position-left.ui-panel-display-overlay, .ui-panel-animate.ui-panel-position-left.ui-panel-display-push {
+	-webkit-transform: translate3d(-50em,0,0);
+	-moz-transform: translate3d(-50em,0,0);
+	transform: translate3d(-50em,0,0);
+}
+
+
+
+/*Use the mobile version of UI when the width is < 768px*/
+@media screen and (max-width: 968px) {
     .desktop {display:none !important;}
+	#panel {width:100%;}
+	.ui-panel-animate.ui-panel-position-left.ui-panel-display-overlay, .ui-panel-animate.ui-panel-position-left.ui-panel-display-push {
+		-webkit-transform: translate3d(-30em,0,0);
+		-moz-transform: translate3d(-30em,0,0);
+		transform: translate3d(-30em,0,0);
+	}
 }
 
 /*Use desktop version of image carousel when width > 769px*/
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 969px) {
     .mobile {display:none !important;}
+	.nav-bar > #search {width:400px;}
+	#panel-close-button{width:50%;vertical-align:middle;}
 }

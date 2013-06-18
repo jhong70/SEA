@@ -2,6 +2,10 @@
 
 $(document).ready(function() {
 	
+		$('#panel-close-button').click(function(e) {
+            $( "#panel" ).panel( "close" );
+        });
+	
 		//Initialize map and geocoder 
      	map = L.mapbox.map('map', 'examples.map-vyofok3q', { zoomControl: false }).setView([40, -74.50], 9);
 		userLocLayer = L.geoJson().addTo(map);
@@ -20,14 +24,13 @@ $(document).ready(function() {
 		map.on('locationfound', function(e) {
     		map.fitBounds(e.bounds).setZoom(15);
 			latlng = e.latlng.lat+","+e.latlng.lng;
-			console.log("User Location: "+latlng);
 			//Add a marker on users' location
 			var userIcon = L.icon({
 				iconUrl: 'http://www.prism.gatech.edu/~jhong70/sea/img/markers/user-marker.png',
 				iconAnchor: [12,41]
 			});
 			//Create and bind popup
-			var popupContent = "You are here!";
+			var popupContent = "Here you are!";
 			L.marker([e.latlng.lat, e.latlng.lng], {icon: userIcon}).bindPopup(popupContent,{offset: new L.Point(0,-15)}).addTo(map).openPopup();
 		});
 		
@@ -39,47 +42,67 @@ $(document).ready(function() {
 		//Upon pressing enter while search bar is focused, do a search and move the map accordingly
 		$('#searchInput').keypress(function(e) {
 			if(event.keyCode == 13){
-				$('#searchInput').blur();
-				map.setZoom(12);
 				e.preventDefault();
-				eventsLayer.clearLayers();
-				var oArgs = { app_key: "sj98RZjS2GJJGhhH", keywords: $('#searchInput').val(), page_size: 200, location:latlng, within:5}; 
-				EVDB.API.call("/events/search", oArgs, function(oData) {
-					console.log(oData.total_items);
-					if(oData.total_items<200)
-					for (i=0;i<((oData.total_items<200) ? oData.total_items : 200);i++){
-						try{
-							var evIcon = L.icon({
-								iconUrl: 'http://www.prism.gatech.edu/~jhong70/sea/img/markers/event-marker.png',
-								iconAnchor: [12,41]
-							});
-							L.marker([oData.events.event[i].latitude, oData.events.event[i].longitude], {icon: evIcon}).addTo(eventsLayer);
-						}catch(e){
-							/*Despite the event count returned from the Eventful API, some events are undefined. 
-							I thought they might have venue address information so I implemented MapQuest's geocoder 
-							to return coordinates given an address. MapBox's geocoder currently doesn't do street level.
-							var url = "http://www.mapquestapi.com/geocoding/v1/address?key=Fmjtd%7Cluub2g6zlu%2C7l%3Do5-9ua556&location="+oData.events.event[i].venue_address;
-							$.ajax({
-    							url: url,
-    							//dataType: 'json',
-    							type: 'GET',
-    							contentType:'json',
-    							//data: {location: { "postalCode": "30332"}},
-    							success: function(data) { 
-									eventsLayer.addData({
-        								type: "Feature",
-        								geometry: {
-            								type: "Point",
-            								coordinates: [data.results[0].locations[0].latLng.lng, data.results[0].locations[0].latLng.lat]
-        								}
-    								});
-								},
-    							error: function(data) { console.log( 'error occurred'); }
-							});*/
+				if($('#searchInput').val().length>0){
+					$('#searchInput').blur();
+					map.setZoom(12);
+					eventsLayer.clearLayers();
+					var oArgs = { app_key: "sj98RZjS2GJJGhhH", keywords: $('#searchInput').val(), page_size: 200, location:latlng, within:5}; 
+					EVDB.API.call("/events/search", oArgs, function(oData) {
+						
+						console.log(oData.total_items);
+						if(oData.total_items<200)
+						for (i=0;i<((oData.total_items<200) ? oData.total_items : 200);i++){
+							try{
+								var evIcon = L.icon({
+									iconUrl: 'http://www.prism.gatech.edu/~jhong70/sea/img/markers/event-marker.png',
+									iconAnchor: [12,41]
+								});
+								var venue_address = (oData.events.event[i].venue_address) ? oData.events.event[i].venue_address : 'Not Defined';
+								var event_title = (oData.events.event[i].title) ? oData.events.event[i].title : 'Not Defined';
+								var start_time = (oData.events.event[i].start_time) ? oData.events.event[i].start_time : 'Not Defined';
+								var end_time = (oData.events.event[i].end_time) ? oData.events.event[i].end_time : 'Not Defined';
+								var description = (oData.events.event[i].description) ? oData.events.event[i].description : 'No Description';
+								var cal_count = (oData.events.event[i].calendar_count) ? oData.events.event[i].calendar_count : 0;
 							
+								var eventDesc = "<strong>"+event_title+"</strong></br>"+
+												   "<strong>Address:</strong> "+venue_address+"</br>";
+								var eventButton = $("<button type='button' data-role='button'>Event Page</button>").click(function(e){
+										$('#panel').panel('open');
+										$('#panel-result').empty();
+										$('#panel-result').append('<p><strong>Event</strong>: '+event_title+'</p><p><strong>Address</strong>: '+venue_address+'</p><p><strong>Description</strong>: '+description+'</p><p><strong>Starting time</strong>: '+start_time+'</p><p><strong>Ending time:</strong>: '+end_time+'</p><p><strong>Calendar count</strong>: '+cal_count+'</p>');
+										$( "#panel" ).trigger( "updatelayout" );
+									})[0];
+								var div = $('<div />').html(eventDesc).append(eventButton)[0];
+								L.marker([oData.events.event[i].latitude, oData.events.event[i].longitude], {icon: evIcon}).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(eventsLayer);
+								
+							}catch(e){
+								/*Despite the event count returned from the Eventful API, some events are undefined. 
+								I thought they might have venue address information so I implemented MapQuest's geocoder 
+								to return coordinates given an address. MapBox's geocoder currently doesn't do street level.
+								var url = "http://www.mapquestapi.com/geocoding/v1/address?key=Fmjtd%7Cluub2g6zlu%2C7l%3Do5-9ua556&location="+oData.events.event[i].venue_address;
+								$.ajax({
+    								url: url,
+    								//dataType: 'json',
+    								type: 'GET',
+    								contentType:'json',
+    								//data: {location: { "postalCode": "30332"}},
+    								success: function(data) { 
+										eventsLayer.addData({
+        									type: "Feature",
+        									geometry: {
+            									type: "Point",
+            									coordinates: [data.results[0].locations[0].latLng.lng, data.results[0].locations[0].latLng.lat]
+        									}
+    									});
+									},
+    								error: function(data) { console.log( 'error occurred'); }
+								});*/
+							
+							}
 						}
-					}
-				});
+					});
+				}
 			}
         });
 });
