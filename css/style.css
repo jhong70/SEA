@@ -16,6 +16,7 @@ body .ui-body-c, .ui-body-c input, .ui-body-c select, .ui-body-c textarea, .ui-b
 
 .nav-bar > #search {
 	width:55%;
+	padding-left:10px;
 	display:inline-block;
 }
 
@@ -37,7 +38,7 @@ body .ui-body-c, .ui-body-c input, .ui-body-c select, .ui-body-c textarea, .ui-b
 }
 
 .ui-panel-inner {
-   
+  padding:0px;
 }
 
 #panel-result{
@@ -49,6 +50,13 @@ body .ui-body-c, .ui-body-c input, .ui-body-c select, .ui-body-c textarea, .ui-b
 #nav-panel{
 	background: rgba(73,73,73,.95);
 	text-shadow: 0px 1px 1px #000000;
+	min-height:0px !important;
+}
+
+#nav-panel-contents {
+	overflow-y:scroll;
+	-webkit-overflow-scrolling: touch;
+	padding:2px;
 }
 
 #nav-panel ul{

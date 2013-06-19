@@ -1,17 +1,6 @@
 // JavaScript Document
-$(window).load(function(e) {
-        window.scrollTo(0, 1);
-});
-
 
 $(document).ready(function() {
-	
-	
-	$('#panel-result').height($(window).height()-55-30-40-20);
-	
-	$('#panel-close-button').click(function(e) {
-		$( "#panel" ).panel( "close" );
-	});
 	
 	//Initialize map and geocoder 
 	map = L.mapbox.map('map', 'examples.map-vyofok3q', { zoomControl: false }).setView([40, -74.50], 9);
@@ -52,6 +41,7 @@ $(document).ready(function() {
 			e.preventDefault();
 			if($('#searchInput').val().length>0){
 				$('#searchInput').blur();
+				$( "#panel" ).panel( "close" );
 				map.setZoom(12);
 				eventsLayer.clearLayers();
 				var oArgs = { app_key: "sj98RZjS2GJJGhhH", keywords: $('#searchInput').val(), page_size: 200, location:latlng, within:5}; 
@@ -113,11 +103,20 @@ $(document).ready(function() {
 		}
 	});
 	
+	$('#panel-close-button').click(function(e) {
+		$( "#panel" ).panel("close");
+	});
+	
+	$('#panel-result').height($(window).height()-$('#header').outerHeight()-$('#panel-close-button').outerHeight()-40);
+	$('#nav-panel').height($(window).height());
+	$('#nav-panel-contents').height($(window).height());
+	
+	
 	//jQM and Leaflet do not play well... This resizes the map to display correctly 
 	if ( map ) // if started
     {
     	if($('#map').is(':visible') ) { //just security
-        	$('#map').height( $(window).height()-55 ); // it will still respect your css, mine uses it up to 85%
+        	$('#map').height( $(window).height()-$('#header').outerHeight()-$('#footer').outerHeight() ); 
         	$('#map').width( $(window).width() ); // as well as height
         	map.invalidateSize(); // here it comes
     	}
@@ -125,9 +124,12 @@ $(document).ready(function() {
 	
 	//We have to readjust the size when the user resizes the window.
 	$(window).resize(function() {
-        $('#map').height( $(window).height()-55 ); // it will still respect your css, mine uses it up to 85%
-        $('#map').width( $(window).width() ); // as well as height
-		$('#panel-result').height($(window).height()-55-30-40-20);
+		
+		$('#nav-panel-contents').height($(window).height());
+		$('#nav-panel').height($(window).height());
+        $('#map').height( $(window).height()-$('#header').outerHeight()-$('#footer').outerHeight() );
+        $('#map').width( $(window).width() ); 
+		$('#panel-result').height($(window).height()-$('#header').outerHeight()-$('#panel-close-button').outerHeight()-40);
     });
 		
 });

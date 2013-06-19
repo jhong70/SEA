@@ -19,13 +19,13 @@
     
     <div id="wrapper" data-role="page">
 
-    	<div id="head" data-role="header" data-theme="b" data-position="fixed">
+    	<div id="header" data-role="header" data-theme="b" data-position="fixed">
         	<div class="nav-bar">
     			<span class="brand desktop">Social Events App</span>
     			<form id="search">
   					<input id="searchInput" type="text" class="search-query" placeholder="Find me events">
 				</form>
-                <a href="#nav-panel" class="mobile nav-button" data-role="button">Menu</a>
+                <a href="#nav-panel" class="mobile nav-button" data-icon="bars" data-role="button">Menu</a>
                 <a href="" class="desktop nav-button"  data-role="button">Account</a>
                 <a href="" class="desktop nav-button"  data-role="button">Share</a>
                 <a href="" class="desktop nav-button"  data-role="button">Map Options</a>
@@ -36,18 +36,20 @@
     	
         <!-- nav panel -->
         <div data-role="panel" data-position="right" data-swipe-close="false" id="nav-panel"  data-display="reveal" data-theme="a">
-        	<h3>Social Events App</h3>
-            <ul type="none">
-            <h4>Share</h4>
-            	<li><a href="">Upload Photos</a></li>
-            <h4>Map</h4>
-            	<li><a href="">Overlays</a></li>
-            <h4>Account</h4>
-            	<li><a href="">Profile</a></li>
-            	<li><a href="">Friends</a></li>
-            	<li><a href="">My Events</a></li>
-            	<li><a href="">Settings</a></li>
-            </ul> 
+        	<div id="nav-panel-contents">
+                <h3>Social Events App</h3>
+                <ul type="none">
+                <h4>Share</h4>
+                    <li><a href="">Upload Photos</a></li>
+                <h4>Map</h4>
+                    <li><a href="">Overlays</a></li>
+                <h4>Account</h4>
+                    <li><a href="">Profile</a></li>
+                    <li><a href="">Friends</a></li>
+                    <li><a href="">My Events</a></li>
+                    <li><a href="">Settings</a></li>
+                </ul> 
+        	</div>
 		</div>
         
         <div id="content" data-role="content">
@@ -59,7 +61,7 @@
     		<div id="map" class="map"></div>
     	</div>
         
-        <!--<div data-role="footer">		
+        <div data-role="footer" class="mobile" id="footer">		
 			<div data-role="navbar">
 				<ul>
 					<li><a href="#">Check in</a></li>
@@ -67,7 +69,7 @@
 					<li><a href="#">My Events</a></li>
 				</ul>
 			</div><!-- /navbar -->
-		<!--</div>-->
+		</div>
     </div>
 
     
