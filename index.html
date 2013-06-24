@@ -5,11 +5,10 @@
 	<title>Social Events App</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link href="css/style.css" rel="stylesheet" media="screen">
     <link href='http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css' rel='stylesheet'/>
-    <link href='http://api.tiles.mapbox.com/mapbox.js/v1.0.2/mapbox.css' rel='stylesheet' />
-    <link href='css/style.css' rel='stylesheet'/>
+    <link href='css/jQm_theme.min.css' rel='stylesheet'/>
     <link href='http://fonts.googleapis.com/css?family=Ubuntu:300' rel='stylesheet' type='text/css'>
+    <link href='css/index_style.css' rel='stylesheet'/>
     <!--[if lte IE 8]>
     <link href='http://api.tiles.mapbox.com/mapbox.js/v1.0.2/mapbox.ie.css' rel='stylesheet' >
   	<![endif]-->
@@ -19,65 +18,26 @@
     
     <div id="wrapper" data-role="page">
 
-    	<div id="header" data-role="header" data-theme="b" data-position="fixed">
-        	<div class="nav-bar">
-    			<span class="brand desktop">Social Events App</span>
-    			<form id="search">
-  					<input id="searchInput" type="text" class="search-query" placeholder="Find me events">
-				</form>
-                <a href="#nav-panel" class="mobile nav-button" data-icon="bars" data-role="button">Menu</a>
-                <a href="" class="desktop nav-button"  data-role="button">Account</a>
-                <a href="" class="desktop nav-button"  data-role="button">Share</a>
-                <a href="" class="desktop nav-button"  data-role="button">Map Options</a>
-                <a href="#panel" class="desktop nav-button"  data-role="button">News Feed</a>
-            	
-            </div>
+    	<div id="header" data-role="header" data-theme="a" data-position="fixed">
+        	<h1>Welcome</h1>
   		</div>
-    	
-        <!-- nav panel -->
-        <div data-role="panel" data-position="right" data-swipe-close="false" id="nav-panel"  data-display="reveal" data-theme="a">
-        	<div id="nav-panel-contents">
-                <h3>Social Events App</h3>
-                <ul type="none">
-                <h4>Share</h4>
-                    <li><a href="">Upload Photos</a></li>
-                <h4>Map</h4>
-                    <li><a href="">Overlays</a></li>
-                <h4>Account</h4>
-                    <li><a href="">Profile</a></li>
-                    <li><a href="">Friends</a></li>
-                    <li><a href="">My Events</a></li>
-                    <li><a href="">Settings</a></li>
-                </ul> 
-        	</div>
-		</div>
         
-        <div id="content" data-role="content">
-        	<div data-role="panel" data-dismissible="false" data-swipe-close="false" id="panel" data-display="overlay" align="center">
-				<a id="panel-close-button" data-role="button">Close</a>
-            	<div id="panel-result" align="left">
-            	</div>
-			</div>
-    		<div id="map" class="map"></div>
+        <div id="content" data-role="content" align="center">
+        	<!--spacer-->
+        	<div style="padding-top:15%;"></div>
+            
+        	<h1>Social Events App</h1>
+        	<a href="main.html" data-rel="external" data-ajax="false" data-role="button" data-theme="a" style="width:80%;">Login with facebook</a>
+            <a href="main.html" data-rel="external" data-ajax="false" data-role="button" data-theme="a" style="width:80%;">Continue without account</a>
+    		
     	</div>
         
-        <div data-role="footer" class="mobile" id="footer">		
-			<div data-role="navbar">
-				<ul>
-					<li><a href="#">Check in</a></li>
-					<li><a href="#">News Feed</a></li>
-					<li><a href="#">My Events</a></li>
-				</ul>
-			</div><!-- /navbar -->
-		</div>
+        
     </div>
 
     
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src='http://api.tiles.mapbox.com/mapbox.js/v1.0.2/mapbox.js'></script>
     <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script> 
-    <script src="js/EVDB.js"></script>
-    <script src="js/scripts.js"></script>
     
 </body>
 </html>

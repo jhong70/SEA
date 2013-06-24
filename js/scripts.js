@@ -1,7 +1,10 @@
 // JavaScript Document
 
 $(document).ready(function() {
-	
+	var event_boiler_plate;
+	$.get('js/event_plate.txt', function(data){
+		event_boiler_plate = data;
+	});
 	//Initialize map and geocoder 
 	map = L.mapbox.map('map', 'examples.map-vyofok3q', { zoomControl: false }).setView([40, -74.50], 9);
 	userLocLayer = L.geoJson().addTo(map);
@@ -71,8 +74,11 @@ $(document).ready(function() {
 							eventButton = $("<button type='button' data-role='button'>Event Page</button>").click(function(e){
 									$('#panel').panel('open');
 									$('#panel-result').empty();
-									$('#panel-result').append('<p><strong>Event</strong>: '+title+'</p><p><strong>Address</strong>: '+address+'</p><p><strong>Description</strong>: '+desc+'</p><p><strong>Starting time</strong>: '+s_time+'</p><p><strong>Ending time:</strong>: '+e_time+'</p><p><strong>Calendar count</strong>: '+c_count+'</p><button data-role="button">Check in</button>');
+									$('#panel-result').append(event_boiler_plate);
+									//$('#panel-result').append('<p><strong>Event</strong>: '+title+'</p><p><strong>Address</strong>: '+address+'</p><p><strong>Description</strong>: '+desc+'</p><p><strong>Starting time</strong>: '+s_time+'</p><p><strong>Ending time:</strong>: '+e_time+'</p><p><strong>Calendar count</strong>: '+c_count+'</p><button data-role="button">Check in</button>');
 									//Update the panel so that the event info can appear
+									$('#event_title').html(title);
+									$('#event_description').html(desc);
 									$( "#panel" ).trigger( "updatelayout" );
 									//Re-initialize the panel-result div so that jQuery mobile can apply its styling for the contents within
 									$('#panel-result').trigger("create");
@@ -80,6 +86,7 @@ $(document).ready(function() {
 							
 							var div = $('<div />').html(eventDesc).append(eventButton)[0];
 							L.marker([oData.events.event[i].latitude, oData.events.event[i].longitude], {icon: evIcon}).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(eventsLayer);
+							
 							})(event_title,venue_address,description,start_time,end_time,cal_count);
 							
 						}catch(e){
@@ -116,16 +123,16 @@ $(document).ready(function() {
 		$( "#panel" ).panel("close");
 	});
 	
-	$('#panel-result').height($(window).height()-$('#header').outerHeight()-$('#panel-close-button').outerHeight()-40);
+	$('#panel-result').height($(window).height()-$('#header').outerHeight()-$('#panel-close-button').outerHeight()-20);
 	$('#nav-panel').height($(window).height());
-	$('#nav-panel-contents').height($(window).height());
+	$('#nav-panel-contents').height($(window).height()-20);
 	
 	
 	//jQM and Leaflet do not play well... This resizes the map to display correctly 
 	if ( map ) // if started
     {
     	if($('#map').is(':visible') ) { //just security
-        	$('#map').height( $(window).height()-$('#header').outerHeight()-$('#footer').outerHeight() ); 
+        	$('#map').height( $(window).height()-$('#header').outerHeight()-$('#footer').outerHeight() - $('#top-nav').outerHeight() ); 
         	$('#map').width( $(window).width() ); // as well as height
         	map.invalidateSize(); // here it comes
     	}
@@ -133,12 +140,11 @@ $(document).ready(function() {
 	
 	//We have to readjust the size when the user resizes the window.
 	$(window).resize(function() {
-		
-		$('#nav-panel-contents').height($(window).height());
+		$('#nav-panel-contents').height($(window).height()-20);
 		$('#nav-panel').height($(window).height());
-        $('#map').height( $(window).height()-$('#header').outerHeight()-$('#footer').outerHeight() );
+        $('#map').height( $(window).height()-$('#header').outerHeight()-$('#footer').outerHeight() - $('#top-nav').outerHeight());
         $('#map').width( $(window).width() ); 
-		$('#panel-result').height($(window).height()-$('#header').outerHeight()-$('#panel-close-button').outerHeight()-40);
+		$('#panel-result').height($(window).height()-$('#header').outerHeight()-$('#panel-close-button').outerHeight()-20);
     });
 		
 });
