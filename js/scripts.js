@@ -64,14 +64,19 @@ $(document).ready(function() {
 						
 							var eventDesc = "<strong>"+event_title+"</strong></br>"+
 											   "<strong>Address:</strong> "+venue_address+"</br>";
-							var eventButton = $("<button type='button' data-role='button'>Event Page</button>").click(function(e){
+							var eventButton;
+							
+							//I have to pass pass in the current venue_address, event_title, etc. into a function so that the popups don't all share the same values for those variables and instead we get deep copies. Some OP stuff right here...
+							(function(title,address,desc,s_time,e_time,c_count){
+							eventButton = $("<button type='button' data-role='button'>Event Page</button>").click(function(e){
 									$('#panel').panel('open');
 									$('#panel-result').empty();
-									$('#panel-result').append('<p><strong>Event</strong>: '+event_title+'</p><p><strong>Address</strong>: '+venue_address+'</p><p><strong>Description</strong>: '+description+'</p><p><strong>Starting time</strong>: '+start_time+'</p><p><strong>Ending time:</strong>: '+end_time+'</p><p><strong>Calendar count</strong>: '+cal_count+'</p>');
+									$('#panel-result').append('<p><strong>Event</strong>: '+title+'</p><p><strong>Address</strong>: '+address+'</p><p><strong>Description</strong>: '+desc+'</p><p><strong>Starting time</strong>: '+s_time+'</p><p><strong>Ending time:</strong>: '+e_time+'</p><p><strong>Calendar count</strong>: '+c_count+'</p><button data-role="button">Check in</button>');
 									$( "#panel" ).trigger( "updatelayout" );
 								})[0];
 							var div = $('<div />').html(eventDesc).append(eventButton)[0];
 							L.marker([oData.events.event[i].latitude, oData.events.event[i].longitude], {icon: evIcon}).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(eventsLayer);
+							})(event_title,venue_address,description,start_time,end_time,cal_count);
 							
 						}catch(e){
 							/*Despite the event count returned from the Eventful API, some events are undefined. 
