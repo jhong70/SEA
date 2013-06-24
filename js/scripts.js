@@ -72,8 +72,12 @@ $(document).ready(function() {
 									$('#panel').panel('open');
 									$('#panel-result').empty();
 									$('#panel-result').append('<p><strong>Event</strong>: '+title+'</p><p><strong>Address</strong>: '+address+'</p><p><strong>Description</strong>: '+desc+'</p><p><strong>Starting time</strong>: '+s_time+'</p><p><strong>Ending time:</strong>: '+e_time+'</p><p><strong>Calendar count</strong>: '+c_count+'</p><button data-role="button">Check in</button>');
+									//Update the panel so that the event info can appear
 									$( "#panel" ).trigger( "updatelayout" );
+									//Re-initialize the panel-result div so that jQuery mobile can apply its styling for the contents within
+									$('#panel-result').trigger("create");
 								})[0];
+							
 							var div = $('<div />').html(eventDesc).append(eventButton)[0];
 							L.marker([oData.events.event[i].latitude, oData.events.event[i].longitude], {icon: evIcon}).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(eventsLayer);
 							})(event_title,venue_address,description,start_time,end_time,cal_count);
