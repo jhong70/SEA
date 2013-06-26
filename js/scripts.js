@@ -119,6 +119,13 @@ $(document).ready(function() {
 		}
 	});
 	
+	//This is Paul trying to get the List View to work
+	$('listView').click(function(){
+		var anything = 'Displaying Something';
+		//will need to use the .each(function()) loop at some point
+		alert(anything);
+	});
+	
 	$('#panel-close-button').click(function(e) {
 		$( "#panel" ).panel("close");
 	});
