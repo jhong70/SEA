@@ -69,7 +69,7 @@ $(document).ready(function() {
 											   "<strong>Address:</strong> "+venue_address+"</br>";
 							var eventButton;
 							
-							//I have to pass pass in the current venue_address, event_title, etc. into a function so that the popups don't all share the same values for those variables and instead we get deep copies. Some OP stuff right here...
+							//I have to pass in the current venue_address, event_title, etc. into a function so that the popups don't all share the same values for those variables and instead we get deep copies. Some OP stuff right here...
 							(function(title,address,desc,s_time,e_time,c_count){
 							eventButton = $("<button type='button' data-role='button'>Event Page</button>").click(function(e){
 									$('#panel').panel('open');
