@@ -2,28 +2,35 @@
 /* CSS Document */
 
 /*Global font-family. Need to apply our font where we want them in jQuery mobile UI elements.*/
-body .ui-body-c, .ui-body-c input, .ui-body-c select, .ui-body-c textarea, .ui-body-c button, .ui-bar-b, .ui-body-a, .ui-btn-up-a, .ui-btn-hover-a, .ui-btn-down-a, .ui-bar-a {
-   font-family: "Ubuntu";
+body .ui-link, .ui-body-a, .ui-body-c, .ui-body-a input, .ui-body-a select, .ui-body-a textarea, .ui-body-a button, .ui-bar-a, .ui-body-a, .ui-btn-up-a, .ui-btn-hover-a, .ui-btn-down-c, .ui-btn-up-c, .ui-btn-hover-c, .ui-btn-down-c, .ui-bar-a {
+    font-weight: 300 !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight:normal;
+}
+
+.ui-btn {
+	border:2px;
+	border-color: transparent;
+	margin:0px;
 }
 
 .ui-body-c, .ui-body-a{
 	border:0;
 }
 
-.ui-bar-a {
-	background: #5dbdef;
-	/*background:#f59170;	*/
-}
-
 .ui-dialog .ui-dialog-contain {  }
 
-/* Navigational/Search bar */
-
+/* Navigation/Search bar */
 .nav-bar > .brand {
 	font-size:22px;	
 	padding-left:4px;
-	color:white;
-	text-shadow: 0px 1px 1px #000000;
 }
 
 .nav-bar > #search {

@@ -2,18 +2,52 @@
 /* CSS Document */
 
 /*Global font-family. Need to apply our font where we want them in jQuery mobile UI elements.*/
-body .ui-body-c, .ui-body-c input, .ui-body-a select, .ui-body-a textarea, .ui-body-a button, .ui-bar-a, .ui-body-a, .ui-btn-up-a, .ui-btn-hover-a, .ui-btn-down-a, .ui-content {
-   font-family: "Ubuntu"; 
+body .ui-link, .ui-body-a, .ui-body-c, .ui-body-a input, .ui-body-a select, .ui-body-a textarea, .ui-body-a button, .ui-bar-a, .ui-body-a, .ui-btn-up-a, .ui-btn-hover-a, .ui-btn-down-c, .ui-btn-up-c, .ui-btn-hover-c, .ui-btn-down-c, .ui-bar-a {
+    font-weight: 300 !important;
 }
 
-.ui-bar-a {
-	background: #5dbdef;	
+.ui-body-a {
+	background: #5dbdef; /* Old browsers */
+	background: #e5f5fc; /* Old browsers */
+background: -moz-radial-gradient(center, ellipse cover, #e5f5fc 4%, #5dbdef 100%); /* FF3.6+ */
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(4%,#e5f5fc), color-stop(100%,#5dbdef)); /* Chrome,Safari4+ */
+background: -webkit-radial-gradient(center, ellipse cover, #e5f5fc 4%,#5dbdef 100%); /* Chrome10+,Safari5.1+ */
+background: -o-radial-gradient(center, ellipse cover, #e5f5fc 4%,#5dbdef 100%); /* Opera 12+ */
+background: -ms-radial-gradient(center, ellipse cover, #e5f5fc 4%,#5dbdef 100%); /* IE10+ */
+background: radial-gradient(ellipse at center, #e5f5fc 4%,#5dbdef 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5f5fc', endColorstr='#5dbdef',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight:normal;
+}
+
+.ui-content {
+	padding:0;
+}
+
+.ui-btn {
+	border:0px;
+	margin:1px;
+}
+
+.ui-header{
+	border-color:white;
+}
+
+#banner {
+	color:white;
+	text-shadow: 0px 0px 1px #000000;
 }
 
 .ui-bar-a h1 {
 	color:white;
 	text-shadow: 0px 1px 1px #000000;
-		
 }
 
 
