@@ -1,4 +1,4 @@
-// JavaScript Document
+//JavaScript Document
 
 $(document).ready(function() {
 	var event_boiler_plate;

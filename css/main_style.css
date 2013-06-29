@@ -33,17 +33,25 @@ body .ui-body-c, .ui-body-c input, .ui-body-c select, .ui-body-c textarea, .ui-b
 
 .nav-bar .nav-button {
 	display:inline-block;	
-	top:12px;
+	top:3px;
 	height:28px;
-	width:28px;
 	padding-left:4px;
 	padding-top:4px;
 	margin:0px;
 }
 
+
+/*Buttons that don't have text need additional 12px top offsets*/
 .nav-bar #menuButton {
 	float:right;
 	right:4px;
+	width:28px;
+	top:12px;
+}
+
+.nav-bar #filterButton {
+	width:28px;
+	top:12px;
 }
 
 
