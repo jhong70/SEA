@@ -69,7 +69,7 @@ h6 {
 
 
 /*Panels (list panel and nav panel) */
-#panel {
+.panel{
 	width:50em;
 }
 
@@ -77,7 +77,7 @@ h6 {
 	padding:0px;
 }
 
-#panel-result{
+.panel-result{
 	height:auto;
 	overflow-y:scroll;
 	-webkit-overflow-scrolling: touch;
@@ -127,7 +127,7 @@ h6 {
 /*Use the mobile version of UI when the width is < 768px*/
 @media screen and (max-width: 968px) {
     .desktop {display:none !important;}
-	#panel {width:100%;}
+	.panel {width:100%;}
 	.ui-panel-animate.ui-panel-position-left.ui-panel-display-overlay, .ui-panel-animate.ui-panel-position-left.ui-panel-display-push {
 		-webkit-transform: translate3d(-30em,0,0);
 		-moz-transform: translate3d(-30em,0,0);
@@ -139,5 +139,6 @@ h6 {
 @media screen and (min-width: 969px) {
     .mobile {display:none !important;}
 	.nav-bar > #search {width:400px;}
-	#panel-close-button{width:50%;vertical-align:middle;}
+	#event-closebtn{width:50%;vertical-align:middle;}
+	#list-closebtn{width:50%;vertical-align:middle;}
 }

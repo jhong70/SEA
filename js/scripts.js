@@ -7,8 +7,10 @@ var userLocLayer;
 var eventsLayer;
 var geocoder;
 var userLatLng;
-var sponsored_results;
-var user_results;
+var sponsored_results = [];
+var user_results = [];
+
+
 
 $(document).ready(function() {
 
@@ -42,9 +44,41 @@ $(document).ready(function() {
 	//---On location error, alert the user
 	map.on('locationerror', function(e) {
 		console.log(e);
-		alert('Could not track your location');
+		$("#loc-error-link").click();
 	});
 	//END MAP AND USER LOCATION INITIALIZATION
+
+	//USE MAPQUEST GEOCODER IF LOCATION NOT ALLOWED OR FOUND
+	$('#user-loc-input').keypress(function(e){
+		if(event.keyCode==13){
+			e.preventDefault();
+			if($('#user-loc-input').val().length>0){
+				var url = "http://www.mapquestapi.com/geocoding/v1/address?key=Fmjtd%7Cluub2g6zlu%2C7l%3Do5-9ua556&location="+$('#user-loc-input').val();
+				$.ajax({
+					url: url,
+					//dataType: 'json',
+					type: 'GET',
+					contentType:'json',
+					//data: {location: { "postalCode": "30332"}},
+					success: function(data) { 
+						var lat = data.results[0].locations[0].latLng.lat;
+						var lng = data.results[0].locations[0].latLng.lng;
+						map.setView([lat,lng],15);
+						userLatLng = lat+","+lng;
+						var userIcon = L.icon({
+							iconUrl: 'http://www.prism.gatech.edu/~jhong70/sea/img/markers/user-marker.png',
+							iconAnchor: [12,41]
+						});
+						//---Create and bind popup
+						var popupContent = "Here you are!";
+						L.marker([lat, lng], {icon: userIcon}).bindPopup(popupContent,{offset: new L.Point(0,-15)}).addTo(map).openPopup();
+						window.location.hash = '#';
+					},
+					error: function(data) { console.log( 'error occurred'); }
+				});
+			}
+		}
+	});
 
 
 	//SEARCH FUNCTION
@@ -58,12 +92,12 @@ $(document).ready(function() {
 			e.preventDefault();
 			if($('#searchInput').val().length>0){
 				$('#searchInput').blur();
-				$( "#panel" ).panel( "close" );
+				$('#event-panel').panel( "close" );
 				map.setZoom(12);
 				//Clear any event markers from previous searches
 				eventsLayer.clearLayers();
 				//---Eventful query parameters
-				var oArgs = { app_key: "sj98RZjS2GJJGhhH", keywords: $('#searchInput').val(), page_size: 200, location:latlng, within:5}; 
+				var oArgs = { app_key: "sj98RZjS2GJJGhhH", keywords: $('#searchInput').val(), page_size: 200, location:userLatLng, within:5}; 
 				//---Make an Eventful API call and process the data in the callback function
 				EVDB.API.call("/events/search", oArgs, function(oData) {					
 					console.log(oData.total_items);
@@ -76,58 +110,26 @@ $(document).ready(function() {
 							});
 							var venue_address = (oData.events.event[i].venue_address) ? oData.events.event[i].venue_address : 'Not Defined';
 							var event_title = (oData.events.event[i].title) ? oData.events.event[i].title : 'Not Defined';
-							var start_time = (oData.events.event[i].start_time) ? oData.events.event[i].start_time : 'Not Defined';
-							var end_time = (oData.events.event[i].end_time) ? oData.events.event[i].end_time : 'Not Defined';
-							var description = (oData.events.event[i].description) ? oData.events.event[i].description : 'No Description';
-							var cal_count = (oData.events.event[i].calendar_count) ? oData.events.event[i].calendar_count : 0;
-						
-							var eventDesc = "<strong>"+event_title+"</strong></br>"+
+							var event_lat = oData.events.event[i].latitude;
+							var event_long = oData.events.event[i].longitude;
+							var popupDesc = "<strong>"+event_title+"</strong></br>"+
 											   "<strong>Address:</strong> "+venue_address+"</br>";
 							var eventButton;
 							
 							//---I have to pass in the current venue_address, event_title, etc. into a function so that the popups don't all share the same values for those variables and instead we get deep copies. Some OP stuff right here...
-							(function(title,address,desc,s_time,e_time,c_count){
-							eventButton = $("<button type='button' data-role='button'>Event Page</button>").click(function(e){
-									$('#panel').panel('open');
-									$('#panel-result').empty();
-									$('#panel-result').append(event_boiler_plate);
-									//$('#panel-result').append('<p><strong>Event</strong>: '+title+'</p><p><strong>Address</strong>: '+address+'</p><p><strong>Description</strong>: '+desc+'</p><p><strong>Starting time</strong>: '+s_time+'</p><p><strong>Ending time:</strong>: '+e_time+'</p><p><strong>Calendar count</strong>: '+c_count+'</p><button data-role="button">Check in</button>');
-									//---Update the panel so that the event info can appear
-									$('#event_title').html(title);
-									$('#event_description').html(desc);
-									$( "#panel" ).trigger( "updatelayout" );
-									//---Re-initialize the panel-result div so that jQuery mobile can apply its styling for the contents within
-									$('#panel-result').trigger("create");
+							(function(eventData){
+								eventButton = $("<button type='button' data-role='button'>Event Page</button>").click(function(e){
+									displayEvent(event_boiler_plate,eventData,'#event-panel','#event-result');
 								})[0];
+							})(oData.events.event[i]);
 							
-							var div = $('<div />').html(eventDesc).append(eventButton)[0];
-							L.marker([oData.events.event[i].latitude, oData.events.event[i].longitude], {icon: evIcon}).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(eventsLayer);
+							var div = $('<div />').html(popupDesc).append(eventButton)[0];
+							L.marker([event_lat, event_long], {icon: evIcon}).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(eventsLayer);
 
-							})(event_title,venue_address,description,start_time,end_time,cal_count);
+							sponsored_results.push(oData.events.event[i]);
 							
 						}catch(e){
-							/*Despite the event count returned from the Eventful API, some events are undefined. 
-							I thought they might have venue address information so I implemented MapQuest's geocoder 
-							to return coordinates given an address. MapBox's geocoder currently doesn't do street level.
-							var url = "http://www.mapquestapi.com/geocoding/v1/address?key=Fmjtd%7Cluub2g6zlu%2C7l%3Do5-9ua556&location="+oData.events.event[i].venue_address;
-							$.ajax({
-								url: url,
-								//dataType: 'json',
-								type: 'GET',
-								contentType:'json',
-								//data: {location: { "postalCode": "30332"}},
-								success: function(data) { 
-									eventsLayer.addData({
-										type: "Feature",
-										geometry: {
-											type: "Point",
-											coordinates: [data.results[0].locations[0].latLng.lng, data.results[0].locations[0].latLng.lat]
-										}
-									});
-								},
-								error: function(data) { console.log( 'error occurred'); }
-							});*/
-						
+							console.log("Eventful oData item processing error.")
 						}
 					}
 				});
@@ -137,12 +139,15 @@ $(document).ready(function() {
 	//END SEARCH
 	
 	//QUICK EVENT CLOSE BUTTON FUNCTION
-	$('#panel-close-button').click(function(e) {
-		$( "#panel" ).panel("close");
+	$('#event-closebtn').click(function(e) {
+		$('#event-panel').panel("close");
+	});
+	$('#list-closebtn').click(function(e) {
+		$('#list-panel').panel("close");
 	});
 	
 	//PANEL HEIGHT ADJUSTMENTS
-	$('#panel-result').height($(window).height()-$('#header').outerHeight()-$('#panel-close-button').outerHeight()-20);
+	$('.panel-result').height($(window).height()-$('#header').outerHeight()-$('#event-closebtn').outerHeight()-20);
 	$('#nav-panel').height($(window).height());
 	$('#nav-panel-contents').height($(window).height()-20);
 	
@@ -159,13 +164,34 @@ $(document).ready(function() {
 	
 
 	//BIND PANEL AND MAP RESIZE FUNCTIONS
-	$(window).resize(function() {
+	$(window).resize(function(){
 		$('#nav-panel-contents').height($(window).height()-20);
 		$('#nav-panel').height($(window).height());
         $('#map').height( $(window).height()-$('#header').outerHeight()-$('#footer').outerHeight() - $('#top-nav').outerHeight());
         $('#map').width( $(window).width() ); 
-		$('#panel-result').height($(window).height()-$('#header').outerHeight()-$('#panel-close-button').outerHeight()-20);
+		$('.panel-result').height($(window).height()-$('#header').outerHeight()-$('#event-closebtn').outerHeight()-20);
     });
 		
 });
+
+
+function displayEvent(html_plate,eventData,panel,panel_content){
+	var venue_address = (eventData.venue_address) ? eventData.venue_address : 'Not Defined';
+	var event_title = (eventData.title) ? eventData.title : 'Not Defined';
+	var start_time = (eventData.start_time) ? eventData.start_time : 'Not Defined';
+	var end_time = (eventData.end_time) ? eventData.end_time : 'Not Defined';
+	var description = (eventData.description) ? eventData.description : 'No Description';
+	var cal_count = (eventData.calendar_count) ? eventData.calendar_count : 0;
+	$(panel).panel('open');
+	$(panel_content).empty();
+	$(panel_content).append(html_plate);
+
+	//---Update the panel so that the event info can appear
+	$('#event_title').html(event_title);
+	$('#event_description').html(description);
+	$(panel).trigger( "updatelayout" );
+	//---Re-initialize the panel-result div so that jQuery mobile can apply its styling for the contents within
+	$(panel_content).trigger("create");
+
+}
 
