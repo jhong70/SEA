@@ -18,7 +18,7 @@
   <body>
     <div id="wrapper" data-role="page" data-theme="a">
 
-    	<div id="header" data-role="header" data-theme="a" data-position="fixed">
+    	<div id="header" data-role="header" data-theme="a" data-position="fixed" >
       	<div class="nav-bar">
   		    <span class="brand desktop">Social Events App</span>
           <span class="brand mobile">SEA</span>
@@ -26,7 +26,8 @@
   		    <form id="search">
             <input id="searchInput" type="text" data-clear-btn="true" class="search-query" placeholder="Find me events">
   	      </form>
-          <a href="#filterPopup" id="filterButton" class="nav-button" data-transition="slidedown" data-iconpos="notext" data-role="button" data-rel="dialog" data-icon="gear"></a>
+          <a href="#filterPopup" id="filterButton" class="nav-button" data-transition="pop" data-iconpos="notext" data-role="button" data-rel="dialog" data-icon="gear"></a>
+          <a href="#loc-error-popup" id="loc-error-link" class="nav-button" data-role="button" data-iconpos="notext" data-transition="pop" data-icon="arrow-u" data-rel="dialog"></a>
 
           <a href="#nav-panel" id="menuButton" class="mobile nav-button" data-iconpos="notext" data-icon="bars" data-role="button"></a>
                   
@@ -68,12 +69,12 @@
   		  <div id="map" class="map"></div>
 
 
-        <div class="panel" data-role="panel" data-dismissible="false" data-swipe-close="false" id="event-panel" data-display="overlay" align="center">
+        <div class="panel" data-theme="a" data-role="panel" data-dismissible="false" data-swipe-close="false" id="event-panel" data-display="overlay" align="center">
           <a id="event-closebtn" data-role="button">Close</a>
           <div class="panel-result" id="event-result" align="left"></div>
         </div>
 
-        <div class="panel" data-role="panel" data-dismissible="false" data-swipe-close="false" id="list-panel" data-display="overlay" align="center">
+        <div class="panel" data-position="right" data-role="panel" data-dismissible="false" data-swipe-close="false" id="list-panel" data-display="overlay" align="center">
           <a id="list-closebtn" data-role="button">Close</a>
           <div class="panel-result" id="list-result" align="left"></div>
         </div>
@@ -84,7 +85,7 @@
   	    <div data-role="navbar">
   		    <ul>
   			    <li><a href="#">News Feed</a></li>
-  			    <li><a href="#">My Events</a></li>
+  			    <li><a href="account.html">My Events</a></li>
   		    </ul>
   	    </div>
       </div><!-- /footer-->
@@ -126,16 +127,15 @@
               
         <fieldset data-role="controlgroup">
     			<legend>Event type:</legend>
-    			<input type="checkbox" name="param-choice" id="param-choice-1" value="friends" checked="checked" />
-    				<label for="param-choice-1">Sponsored</label>
-    			<input type="checkbox" name="param-choice" id="param-choice-2" value="location" />
-    				<label for="param-choice-2">User</label>      
+    			<input type="checkbox" name="param-choice" id="sponsor-choice" checked="checked" />
+    				<label for="sponsor-choice">Sponsored</label>
+    			<input type="checkbox" name="param-choice" id="user-choice" checked="checked"/>
+    				<label for="user-choice">User</label>      
   			</fieldset>       
 		  </div> 		
 	  </div>
 
-    <a href="#loc-error-popup" id="loc-error-link" data-transition="slidedown" data-rel="dialog"></a>
-    <div id="loc-error-popup" data-role="page" data-corners="false" data-shadow="true" data-iconshadow="true" data-theme="a" data-overlay-theme="a">
+    <div id="loc-error-popup" data-close-btn="none" data-role="page" data-corners="false" data-shadow="true" data-iconshadow="true" data-theme="a" data-overlay-theme="a">
       <div data-role="header">
         <h2>Your Location</h2>
       </div>

@@ -28,7 +28,7 @@ h6 {
 .ui-dialog .ui-dialog-contain {  }
 
 /* Navigation/Search bar */
-.nav-bar > .brand {
+.nav-bar .brand {
 	font-size:22px;	
 	padding-left:4px;
 }
@@ -52,11 +52,10 @@ h6 {
 .nav-bar #menuButton {
 	float:right;
 	right:4px;
-	width:28px;
-	top:12px;
 }
 
-.nav-bar #filterButton {
+
+.nav-bar #filterButton,  #loc-error-link, #menuButton {
 	width:28px;
 	top:12px;
 }
@@ -121,6 +120,11 @@ h6 {
 	-moz-transform: translate3d(-50em,0,0);
 	transform: translate3d(-50em,0,0);
 }
+.ui-panel-animate.ui-panel-position-right.ui-panel-display-overlay, .ui-panel-animate.ui-panel-position-right.ui-panel-display-push {
+	-webkit-transform: translate3d(50em,0,0);
+	-moz-transform: translate3d(50em,0,0);
+	transform: translate3d(50em,0,0);
+}
 
 
 
@@ -132,6 +136,11 @@ h6 {
 		-webkit-transform: translate3d(-30em,0,0);
 		-moz-transform: translate3d(-30em,0,0);
 		transform: translate3d(-30em,0,0);
+	}
+	.ui-panel-animate.ui-panel-position-right.ui-panel-display-overlay, .ui-panel-animate.ui-panel-position-right.ui-panel-display-push {
+		-webkit-transform: translate3d(30em,0,0);
+		-moz-transform: translate3d(30em,0,0);
+		transform: translate3d(30em,0,0);
 	}
 }
 

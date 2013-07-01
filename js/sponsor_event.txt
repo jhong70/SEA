@@ -1,6 +1,6 @@
 <div>
 	<div id="header" style="border-bottom:1px solid;">
-    	<h2 id="event_title"></h3>
+    	<h3 id="event_title"></h3>
     </div>
     <div id="event_card" style="min-height:250px">
     	<img src="img/no_profile.jpeg" height="150" style="float:left" id="event_image">
