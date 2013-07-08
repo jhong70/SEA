@@ -27,38 +27,41 @@ h6 {
 
 .ui-dialog .ui-dialog-contain {  }
 
+
+
+
+
 /* Navigation/Search bar */
 .nav-bar .brand {
 	font-size:22px;	
 	padding-left:4px;
 }
 
-.nav-bar > #search {
+/*Search bar*/
+.nav-bar #search {
 	width:55%;
 	display:inline-block;
 }
 
+
+
+/*General css for buttons in the nav bar*/
+.nav-bar #nav-buttons-container {
+	float:right;
+}
+
 .nav-bar .nav-button {
 	display:inline-block;	
-	top:3px;
-	height:28px;
-	padding-left:4px;
-	padding-top:4px;
-	margin:0px;
+	height:51px;
+	width:45px;
+	background: rgba(0,0,0,0); 
 }
 
-
-/*Buttons that don't have text need additional 12px top offsets*/
-.nav-bar #menuButton {
-	float:right;
-	right:4px;
+.nav-bar #nav-buttons-container .ui-btn-icon-notext .ui-btn-inner .ui-icon {
+	margin: 15px 1px 1px 14px;
+	float: left;
 }
 
-
-.nav-bar #filterButton,  #loc-error-link, #menuButton {
-	width:28px;
-	top:12px;
-}
 
 
 /*Page contents*/
@@ -67,9 +70,12 @@ h6 {
 }
 
 
+
+
+
 /*Panels (list panel and nav panel) */
 .panel{
-	width:50em;
+	width:40em;
 }
 
 .ui-panel-inner {
@@ -116,15 +122,18 @@ h6 {
 }
 
 .ui-panel-animate.ui-panel-position-left.ui-panel-display-overlay, .ui-panel-animate.ui-panel-position-left.ui-panel-display-push {
-	-webkit-transform: translate3d(-50em,0,0);
-	-moz-transform: translate3d(-50em,0,0);
-	transform: translate3d(-50em,0,0);
+	-webkit-transform: translate3d(-40em,0,0);
+	-moz-transform: translate3d(-40em,0,0);
+	transform: translate3d(-40em,0,0);
 }
 .ui-panel-animate.ui-panel-position-right.ui-panel-display-overlay, .ui-panel-animate.ui-panel-position-right.ui-panel-display-push {
-	-webkit-transform: translate3d(50em,0,0);
-	-moz-transform: translate3d(50em,0,0);
-	transform: translate3d(50em,0,0);
+	-webkit-transform: translate3d(40em,0,0);
+	-moz-transform: translate3d(40em,0,0);
+	transform: translate3d(40em,0,0);
 }
+
+
+
 
 
 

@@ -1,3 +1,7 @@
+<?php session_start(); 
+header("Cache-Control: no-store, no-cache, must-revalidate");
+
+?>
 <!doctype html>
 <html>
   <head>
@@ -5,8 +9,8 @@
   	<title>Social Events App</title>
 
   	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="css/zocial.css" />
     <link href='http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css' rel='stylesheet'/>
-      
     <link href='http://api.tiles.mapbox.com/mapbox.js/v1.0.2/mapbox.css' rel='stylesheet' />
     <link href='css/jQm_theme.min.css' rel='stylesheet'/>
     <link href='css/main_style.css' rel='stylesheet' media="screen"/>
@@ -21,21 +25,18 @@
     	<div id="header" data-role="header" data-theme="a" data-position="fixed" >
       	<div class="nav-bar">
   		    <span class="brand desktop">Social Events App</span>
-          <span class="brand mobile">SEA</span>
+          <!--Need some space for mobile-->
+          <!--<span class="brand mobile">SEA</span>-->
                   
-  		    <form id="search">
+  		    <form id="search" class="ui-icon-alt">
             <input id="searchInput" type="text" data-clear-btn="true" class="search-query" placeholder="Find me events">
   	      </form>
-          <a href="#filterPopup" id="filterButton" class="nav-button" data-transition="pop" data-iconpos="notext" data-role="button" data-rel="dialog" data-icon="gear"></a>
-          <a href="#loc-error-popup" id="loc-error-link" class="nav-button" data-role="button" data-iconpos="notext" data-transition="pop" data-icon="arrow-u" data-rel="dialog"></a>
+          <div id="nav-buttons-container">
+            <a href="#filterPopup" id="filterButton" class="nav-button" data-inline="true" data-transition="pop" data-iconpos="notext" data-role="button" data-rel="dialog" data-icon="search"></a>
+            <a href="#list-panel" class="nav-button" data-inline="true" data-role="button" data-iconpos="notext" data-icon="bars"></a>
+            <a href="#nav-panel" id="menuButton" class="nav-button" data-inline="true" data-iconpos="notext" data-icon="arrow-r" data-role="button"></a>
+          </div>
 
-          <a href="#nav-panel" id="menuButton" class="mobile nav-button" data-iconpos="notext" data-icon="bars" data-role="button"></a>
-                  
-          <a href="#" class="desktop nav-button"  data-role="button">Account</a>
-          <a href="#" class="desktop nav-button"  data-role="button">Share</a>
-          <a href="#" class="desktop nav-button"  data-role="button">Map</a>
-          <a href="#event-panel" class="desktop nav-button"  data-role="button">News Feed</a>
-        	
         </div>
   		</div>
       	
@@ -59,13 +60,6 @@
           
       <div id="content" data-role="content" data-theme="a">
 
-        <div id="top-nav" data-role="navbar">
-  		    <ul>
-  			    <li><a href="#">Browse Events</a></li>
-  			    <li><a href="#list-panel">List View</a></li>
-  		    </ul>
-  	    </div><!-- /navbar -->
-
   		  <div id="map" class="map"></div>
 
 
@@ -74,16 +68,17 @@
           <div class="panel-result" id="event-result" align="left"></div>
         </div>
 
-        <div class="panel" data-position="right" data-role="panel" data-dismissible="false" data-swipe-close="false" id="list-panel" data-display="overlay" align="center">
+        <div class="panel" data-theme="a" data-position="right" data-role="panel" data-dismissible="false" data-swipe-close="false" id="list-panel" data-display="overlay" align="center">
           <a id="list-closebtn" data-role="button">Close</a>
           <div class="panel-result" id="list-result" align="left"></div>
         </div>
 
   	  </div><!-- /content-->
           
-      <div data-role="footer" class="mobile" id="footer">		
+      <div data-role="footer" id="footer">		
   	    <div data-role="navbar">
   		    <ul>
+            <li><a href="#">Browse Events</a></li>
   			    <li><a href="#">News Feed</a></li>
   			    <li><a href="account.html">My Events</a></li>
   		    </ul>
@@ -118,11 +113,8 @@
               
         <fieldset data-role="controlgroup">
     			<legend>Parameters:</legend>
-    			<input type="radio" name="param-choice" id="param-choice-1" value="friends" checked="checked" />
-    				<label for="param-choice-1">By Friends</label>
-    			<input type="radio" name="param-choice" id="param-choice-2" value="location" />
-    				<label for="param-choice-2">By Location</label> 
-          <input type="text" placeholder="Enter an address"/>          
+    			<input type="checkbox" name="param-choice" id="param-choice-1" value="friends" checked="checked" />
+    				<label for="param-choice-1">Friend's Events Only</label>         
   			</fieldset>
               
         <fieldset data-role="controlgroup">
@@ -134,18 +126,6 @@
   			</fieldset>       
 		  </div> 		
 	  </div>
-
-    <div id="loc-error-popup" data-close-btn="none" data-role="page" data-corners="false" data-shadow="true" data-iconshadow="true" data-theme="a" data-overlay-theme="a">
-      <div data-role="header">
-        <h2>Your Location</h2>
-      </div>
-      <div data-role="content">
-        <fieldset data-role="controlgroup">
-          <legend>Enter an Address, City, or State:</legend>
-          <input id="user-loc-input" type="text" placeholder="Address, City, or State"/>
-        </fieldset>       
-      </div>    
-    </div>
 
       
   	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>

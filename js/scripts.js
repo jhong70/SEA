@@ -30,6 +30,7 @@ $(document).ready(function() {
 	//---On location found move and focus the map on users' location
 	userLatLng = "";
 	map.on('locationfound', function(e) {
+		userLocFound = 1;
 		$.mobile.hidePageLoadingMsg();
 		map.fitBounds(e.bounds).setZoom(15);
 		userLatLng = e.latlng.lat+","+e.latlng.lng;
@@ -46,50 +47,19 @@ $(document).ready(function() {
 	map.on('locationerror', function(e) {
 		console.log(e);
 		$.mobile.hidePageLoadingMsg();
-		$("#loc-error-link").click();
+
 	});
 	//END MAP AND USER LOCATION INITIALIZATION
 
-	//USE MAPQUEST GEOCODER IF LOCATION NOT ALLOWED OR FOUND
-	$('#user-loc-input').keypress(function(e){
-		if(event.keyCode==13){
-			e.preventDefault();
-			if($('#user-loc-input').val().length>0){
-				userLocLayer.clearLayers();
-				var url = "http://www.mapquestapi.com/geocoding/v1/address?key=Fmjtd%7Cluub2g6zlu%2C7l%3Do5-9ua556&location="+$('#user-loc-input').val();
-				$.ajax({
-					url: url,
-					//dataType: 'json',
-					type: 'GET',
-					contentType:'json',
-					//data: {location: { "postalCode": "30332"}},
-					success: function(data) { 
-						var lat = data.results[0].locations[0].latLng.lat;
-						var lng = data.results[0].locations[0].latLng.lng;
-						map.setView([lat,lng],15);
-						userLatLng = lat+","+lng;
-						var userIcon = L.icon({
-							iconUrl: 'http://www.prism.gatech.edu/~jhong70/sea/img/markers/user-marker.png',
-							iconAnchor: [12,41]
-						});
-						//---Create and bind popup
-						var popupContent = "Here you are!";
-						L.marker([lat, lng], {icon: userIcon}).bindPopup(popupContent,{offset: new L.Point(0,-15)}).addTo(map);
-						window.location.hash = '#';
-					},
-					error: function(data) { console.log( 'error occurred'); }
-				});
-			}
-		}
-	});
 
 
 	//SEARCH FUNCTION
 	//---We load the quick event html for sponsored events
-	$.get('js/sponsor_event.txt', function(data){
+	$.get('js/sponsor_event.html', function(data){
 		event_boiler_plate = data;
 	});
-	$.get('js/list_element.txt', function(data){
+	console.log(event_boiler_plate);
+	$.get('js/list_element.html', function(data){
 		list_element_plate = data;
 	});
 	//---Upon pressing enter while search bar is focused, do a search and move the map accordingly
@@ -104,6 +74,7 @@ $(document).ready(function() {
 				eventsLayer.clearLayers();
 				$('#list-result').empty();
 				//---Eventful query parameters
+				userLatLng = map.getCenter().lat+","+map.getCenter().lng;
 				var oArgs = { app_key: "sj98RZjS2GJJGhhH", keywords: $('#searchInput').val(), page_size: 200, location:userLatLng, within:5}; 
 				//---Make an Eventful API call and process the data in the callback function
 				if($('#sponsor-choice').is(":checked"))
@@ -158,7 +129,7 @@ $(document).ready(function() {
 	//PANEL HEIGHT ADJUSTMENTS
 	$('.panel-result').height($(window).height()-$('#header').outerHeight()-$('#event-closebtn').outerHeight()-20);
 	$('#nav-panel').height($(window).height());
-	$('#nav-panel-contents').height($(window).height()-20);
+	$('#nav-panel-contents').height($(window).height()-22);
 	
 	
 	//JQM AND LEAFLET (MAP) DO NOT PLAY WELL. MAKE HEIGHT ADJUSTMENTS
@@ -182,6 +153,11 @@ $(document).ready(function() {
     });
 		
 });
+
+
+
+
+
 
 
 function displayEvent(html_plate,eventData,panel,panel_content){
