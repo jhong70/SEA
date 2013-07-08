@@ -44,7 +44,7 @@ if (isset($_SESSION['userprofile']) ) {
                 <a class="ctr_button zocial facebook" href="auth/login.php?app=facebook" data-rel="external" data-ajax="false" style="color:white;"><span>facebook</span></a>
                 <a class="zocial google" href="auth/login.php?app=google" data-rel="external" data-ajax="false" style="color:white;"><span>Google+</span></a><br />
                 <div style="padding-top:4%;"></div>
-                <a class="ctr_button" href="main.html" data-rel="external" data-ajax="false" data-role="button" data-theme="a">Continue without an account</a>
+                <a class="ctr_button" href="main.php" data-rel="external" data-ajax="false" data-role="button" data-theme="a">Continue without an account</a>
             </fieldset>
             
         </div>
