@@ -18,7 +18,7 @@ Misc. Architecture related services:
 	-Twitter Bootstrap (responsive UI)
 
 Prototype:
-	www.prism.gatech.edu/~jhong70/sea
+	htttp://www.seaapp.netne.net/
 	- Uses so far....
 		- Twitter Bootstrap
 		- Mapbox/Leaflet
