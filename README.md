@@ -4,37 +4,40 @@ SEA
 CS 4261 Social Events App
 
 Development Platform:
-  -HTML5 / PHP / mySQL / jQuery
+  -HTML5 / PHP / mySQL / jQuery mobile/ OpAuth (fb+google authentication) / zocial (social media login buttons) 
 
 Databases/APIs:
 	-Eventful (api.eventful.com) [Retrieve event information]
 	-Facebook [login credentials, check ins, pictures, posting ability]
-	-Instagram [login credentials, pictures, posting ability]
--Mapquest Geocoder (might need this for more accurate geocoding)
+	-Google+ [login credentials, pictures, posting ability]
+
 -Mapbox
 	-Leaflet (uses Open Street Maps)
 
 Misc. Architecture related services:
-	-Twitter Bootstrap (responsive UI)
+	-jQuery mobile for UI
 
 Prototype:
 	htttp://www.seaapp.netne.net/
 	- Uses so far....
-		- Twitter Bootstrap
+		- jQuery mobile
 		- Mapbox/Leaflet
 		- Eventful API
-		- Mapquest Geocoder implemented but not used.
+		- Zocial
+		- Php for user persistence
 	- Need to implement
-		- Facebook
-		- Instagram
+		- Facebook (to mySQL registration upon login)
+		- Google+ (same as above)
 		- 
 File Descriptions:
 
-	-index.html
-		-This is the front end of the web app. It essentially holds a static nav-bar div from Twitter's Bootstrap
-		which contains a form input for querying into the Eventful API. 
-		-Below that is a div clas="map" that acts as the container for the map. It's empty because the mapbox.js
-		in /js automatically generates the map within the div when the page loads.
+	-index.php
+		-This is the login page
+		-The reason it's a .php file rather than a .html is because we need to run php that's on the page itself to start a user session in index.php and to check for a user session (if the user has already logged in) in main.php.
+
+
+
+		-----------------------------Everything below is outdated... I will update later----------------------------------
 		
 	-/js/scripts.js
 		- This holds a single function that runs upon the page loading.
