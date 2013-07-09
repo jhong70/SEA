@@ -4,7 +4,7 @@
 || # SONHLAB.com - SONH Social Auth v1 #
 || ##########################################||
 \*==========================================*/
-
+session_start();
 // Call Facebook API
 require_once('facebook/facebook.php');
 // Get Configuration
@@ -33,9 +33,9 @@ $user = $facebook->getUser();
 	}
 	else {
 		$params = array(
-  'scope' => 'read_stream, friends_likes',
-  'redirect_uri' => 'http://seaapp.netne.net/main.php'
-);
+  			'scope' => 'read_stream, friends_likes',
+  			'redirect_uri' => 'http://seaapp.netne.net/main.php'
+		);
 		$loginUrl = $facebook->getLoginUrl($params);
 		header("Location: $loginUrl");
 	}
