@@ -26,6 +26,18 @@ Prototype:
 	- Need to implement
 		- Event creation (publishing from server and subscribing from client)
 		- UI forms for inputting new events
+
+
+To run the project you need to install Meteor.js. Go to Meteor.com and find instructions to do this.
+1. From your command line or terminal (Meteor works in OSX but I'm not sure about Windows) cd into the project directory.
+2. Now type meteor
+	(this will run the project under http://localhost:3000. Open your browser and enter that address to check. Note that the login system is set up to only work for http://sea.meteor.com. This is defined by those APIs. To test correctly you need to deploy the project to sea.meteor.com. No ssh or ftp client is necessary to do this. Look below)
+3. Open a new terminal tab or window.
+4. type meteor deploy sea.meteor.com
+5. Note that this will replace whatever is on there.. Just let everyone know when you deploy. I wouldn't deploy if its not necessary. For example, I need to deploy to test the login system but UI changes should be done under localhost please...
+6. When you make changes to the files in the project, the website or localhost should automatically refresh. This is also another powerful aspect of Meteor and convenient..
+
+
 File Descriptions:
 
 	-index.html
