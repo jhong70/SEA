@@ -4,56 +4,45 @@ SEA
 CS 4261 Social Events App
 
 Development Platform:
-  -HTML5 / PHP / mySQL / jQuery mobile/ OpAuth (fb+google authentication) / zocial (social media login buttons) 
+  -HTML5 / Meteor.js / Mongodb / jQuery mobile / zocial (social media login buttons) 
 
 Databases/APIs:
 	-Eventful (api.eventful.com) [Retrieve event information]
-	-Facebook [login credentials, check ins, pictures, posting ability]
-	-Google+ [login credentials, pictures, posting ability]
-
+	-Facebook / Google / Github / Twitter
 -Mapbox
 	-Leaflet (uses Open Street Maps)
 
 Misc. Architecture related services:
 	-jQuery mobile for UI
+	-Handlebars for inserting html templates
 
 Prototype:
-	htttp://www.seaapp.netne.net/
+	htttp://sea.meteor.com
 	- Uses so far....
 		- jQuery mobile
 		- Mapbox/Leaflet
-		- Eventful API
 		- Zocial
-		- Php for user persistence
+		- Meteor.js for Reactivity and Mongodb implementaiton (Meteor.com)
 	- Need to implement
-		- Facebook (to mySQL registration upon login)
-		- Google+ (same as above)
-		- 
+		- Event creation (publishing from server and subscribing from client)
+		- UI forms for inputting new events
 File Descriptions:
 
-	-index.php
-		-This is the login page
-		-The reason it's a .php file rather than a .html is because we need to run php that's on the page itself to start a user session in index.php and to check for a user session (if the user has already logged in) in main.php.
+	-index.html
+		- The html contains templates
+			- There's a page template that holds everything
+			- nav_user_info for the sliding navigational panel
+				- This panel adjusts its content depending on whether the user is logged in
+				- It uses the currentUser variable that's defined in the Meteor.js library
+				- Please please please! use Meteor.com documentation for this
+				- Also look into Handlebars
 
+	-oAuth.js
+		- This is the function that handles user creation that's typically already defined in Meteor.js
+		- I made custom implementations to get more information from the multiple social media interfaces and to support the custom UI I made for the login system. (list of buttons in the nav panel)
 
-
-		-----------------------------Everything below is outdated... I will update later----------------------------------
-		
-	-/js/scripts.js
-		- This holds a single function that runs upon the page loading.
-		- It initializes the map using the mapbox api and sets the view to some location in New Jersey.
-			- It then creates what's called in the Leaflet/Mapbox api as a layer. I called it "userLocLayer."
-			- It's a dedicated layer for a marker we place for the user location. When a user enters a query 
-			  and then decides to enter another query, we need to delete all of the current markers except 
-			  the user location marker. We can simply choose to delete a layer instead of deleting all 
-			  markers, which is what the eventslayer is for.
-			- We then initialize a mapbox geocoder to obtain the user location.
-			- Then we add a UI control for the user to zoom in and out
-			- The geocoder then attempts to look for the user's location.
-		- Currently we only have one piece of UI (The search bar). So we bind a function whenever a user presses 
-		  the 'enter' key on the search bar.
-			- First, it removes the focus off of the search bar (blur), then zooms the map out. It then 
-			  prevents any default behavior of the search bar upon an enter key press from happening. Then it
-			  clears the events layer to remove any previous event markers. Then it calls the Eventful API to
-  			  retrieve event data based on the input of the search bar. Upon getting it in JSON format, we 
-			  retrieve the latitute and longitude and plot them on our map using the eventslayer.
+	-render.js
+		- This file is responsible for rendering the page correctly as well as resizing the page elements correctly.
+		- This file also handles functions binded to the buttons and UI elements
+		- This is binded to Template.page.rendered because we need to wait for the templates in our index.html to render first to do any jquery with the elements on the page.
+		- We also have a initialized global variable because binding the function to rendered means that the functions' contents are automatically refreshed if Meteor detects any changes to the database, server queries, or any elements that dynamically changes. This is the power of Meteor.js. We don't want to keep unecessarily rendering and initializing the page with map elements. This will make the Leaflet (Mapbox) map to break because for everytime the page automatically refreshes, it will try to reinitialize the map variable with another map.. Leaflet will complain that the map div container has already been initialized. What's there (initialize variable) is my temporary fix that seems to work.

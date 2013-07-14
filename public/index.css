@@ -139,6 +139,7 @@ h6 {
 
 
 
+
 /*Nav panel Animations */
 .ui-panel-animate.ui-panel-position-left.ui-panel-display-overlay, .ui-panel-animate.ui-panel-position-left.ui-panel-display-push {
 	-webkit-transform: translate3d(-40em,0,0);
