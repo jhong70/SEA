@@ -1,5 +1,9 @@
 Accounts.onCreateUser(function (options,user){
-	var accessToken = user.services.github.accessToken,
+	if (options.profile){
+    	user.profile = options.profile;
+	}
+  	return user;
+	/*var accessToken = user.services.github.accessToken,
 		result,
 		profile;
 
@@ -26,5 +30,5 @@ Accounts.onCreateUser(function (options,user){
 		"html_url");
 	user.profile = profile;
 
-	return user;
+	return user;*/
 });

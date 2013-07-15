@@ -50,8 +50,9 @@ h6 {
 .nav-bar .nav-button {
 	display:inline-block;	
 	height:51px;
-	width:45px;
 	margin:0px;
+	width:45px;
+	color:white;
 	background: rgba(0,0,0,0); 
 }
 
@@ -129,11 +130,10 @@ h6 {
 
 .nav-panel-btn {
 	background: rgba(73,73,73,.95) !important;
-	padding:0px !important;
+	padding:5px !important;
 }
 
 .nav-panel-profile-btn {
-	background: rgba(73,73,73,.95) !important;
 	padding:10px !important;
 }
 
