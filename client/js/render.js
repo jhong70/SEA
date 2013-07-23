@@ -5,8 +5,8 @@ var map;
 var userLocLayer;
 var eventsLayer;
 var userLatLng;
-var sponsored_results = [];
-var user_results = [];
+//var sponsored_results = [];
+//var user_results = [];
 var rendered = false;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,7 +67,9 @@ Template.page.rendered = function(){
       //UI FUNCTION BINDS///////////////////////////////////////////////////////////////////////////////////////////
       $('#list-button').click(function(){
         function displayNone(){
-          $('#map').css("display","none");
+          if($(window).width()<=968){ //Check if mobile version. If not then we want the map to partially show.
+            $('#map').css("display","none");
+          }
         }
         setTimeout(displayNone,500);        
       });
@@ -89,15 +91,15 @@ Template.page.rendered = function(){
         var lat = 0;
         var lng = 0;
 
-        if(title.length == 0){
+        if(title.length === 0){
           alert("Please enter a title");
           return;
         }
-        if(description.length == 0){
+        if(description.length === 0){
           alert("Please enter a brief description");
           return;
         }
-        if(tags.length == 0){
+        if(tags.length === 0){
           alert("Please enter at least 1 tag");
           return;
         }
@@ -113,7 +115,7 @@ Template.page.rendered = function(){
           success: function(data) { 
             lat = data.results[0].locations[0].latLng.lat;
             lng = data.results[0].locations[0].latLng.lng;
-            Parties.insert({title:title, address:address, description:description, tags: tags, lat:lat, lng:lng});
+            Parties.insert({title:title, owner:Meteor.userId(), address:address, description:description, tags: tags, lat:lat, lng:lng});
           },
           error: function(data) { console.log( 'error occurred while requesting coordinates for event creation'); }
         });
@@ -131,7 +133,7 @@ Template.page.rendered = function(){
 
       //---Upon pressing enter while search bar is focused, do a search and move the map accordingly
       $('#searchInput').keypress(function(e) {
-        if(event.keyCode == 13){
+        if(event.keyCode === 13){
           e.preventDefault();
           if($('#searchInput').val().length>0){
             $('#searchInput').blur();
@@ -171,7 +173,7 @@ Template.page.rendered = function(){
                   var div = $('<div />').html(popupDesc).append(eventButton)[0];
                   L.marker([event_lat, event_long], {icon: evIcon}).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(sponsoredEventsLayer);
 
-                  sponsored_results.push(oData.events.event[i]);
+                  //sponsored_results.push(oData.events.event[i]);
                   addListEvent(list_element_plate,oData.events.event[i],'#list-panel','#list-result',i);
                   
                 }catch(e){
@@ -227,6 +229,10 @@ Template.page.rendered = function(){
           iconUrl: 'user_event_marker.png',
           iconAnchor: [12,41]
   });
+  var myUserIcon = L.icon({
+          iconUrl: 'my_user_event_marker.png',
+          iconAnchor: [12,41]
+  });
   Deps.autorun(function(){
     userEventsLayer.clearLayers();
     events = Parties.find().fetch();
@@ -253,8 +259,13 @@ Template.page.rendered = function(){
 
       var div = $('<div />').html(popupDesc).append(eventButton)[0];
 
-
-      var ev = L.marker([events[i].lat, events[i].lng], {icon: userIcon}).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(userEventsLayer);
+      var ev;
+      if(Meteor.userId()===events[i].owner){
+        var ev = L.marker([events[i].lat, events[i].lng], {icon: myUserIcon}).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(userEventsLayer);
+      }else{
+        var ev = L.marker([events[i].lat, events[i].lng], {icon: userIcon}).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(userEventsLayer);
+      }
+      
       //Add some attributes to our event on the map for reference later
       ev["title"] = events[i].title;
       ev["lat"] = events[i].lat;

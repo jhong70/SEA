@@ -15,3 +15,16 @@
 */
 Parties = new Meteor.Collection("parties");
 
+Parties.allow({
+	insert: function(userId,party){
+		return userId && party.owner === userId;
+	},
+	update: function(userId, parties, fields, modifier){
+
+		return userId && parties.owner === userId;
+	},
+	remove: function(userId,party){
+		return userId && parties.owner === userId;
+	}
+
+});

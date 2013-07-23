@@ -79,7 +79,7 @@
   			<!--Quick Event Panel-->
 	        <div class="panel" data-theme="a" data-role="panel" data-dismissible="false" data-swipe-close="false" id="event-panel" data-display="overlay" align="center">
 	          <a id="event-closebtn" href="#event-panel" data-role="button">Close</a>
-	          <div class="panel-result" id="event-result" align="left"></div>
+	          <div class="panel-result" id="event-result" align="left">{{> quick_event}}</div>
 	        </div>
 
 	        <!--List result Panel-->
@@ -197,4 +197,26 @@
 		<li><a class="nav-panel-profile-btn zocial twitter" href="" id="login_twitter" >Twitter</a></li>
 		<li><a class="nav-panel-profile-btn zocial github" href="" id="login_github" >github</a></li>
 	{{/if}}
+</template>
+
+<template name="quick_event">
+	<div id="header" style="border-bottom:1px solid;">
+    	<h3 id="event_title"></h3>
+    </div>
+    <div id="event_card" style="min-height:250px">
+    	<img src="no_profile.jpeg" height="150" style="float:left" id="event_image">
+		<h4>Description:</h4>
+		<p id="event_description"></p>
+    </div>
+	
+	<div id="event_tickets" style="border-top:1px solid;border-bottom:1px solid;">
+		<button data-role="button" data-theme="a"><h2>RSVP</h2></button>
+	</div>
+	<div id="event_subscribe" style="border-top:1px solid;border-bottom:1px solid;">
+		<button data-role="button" data-theme="a"><h2>Contact</h2></button>
+	</div>
+
+	<div id="event_subscribe" style="border-top:1px solid;border-bottom:1px solid;">
+		<button data-role="button" data-theme="a"><h2>Subscribe</h2></button>
+	</div>
 </template>
