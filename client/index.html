@@ -79,7 +79,27 @@
   			<!--Quick Event Panel-->
 	        <div class="panel" data-theme="a" data-role="panel" data-dismissible="false" data-swipe-close="false" id="event-panel" data-display="overlay" align="center">
 	          <a id="event-closebtn" href="#event-panel" data-role="button">Close</a>
-	          <div class="panel-result" id="event-result" align="left">{{> quick_event}}</div>
+	          <div class="panel-result" id="event-result" align="left">
+	          	<div id="header" style="border-bottom:1px solid;">
+			    	<h3 id="event_title"></h3>
+			    </div>
+			    <div id="event_card" style="min-height:250px">
+			    	<img src="no_profile.jpeg" height="150" style="float:left" id="event_image">
+					<h4>Description:</h4>
+					<p id="event_description"></p>
+			    </div>
+				
+				<div id="event_tickets" style="border-top:1px solid;border-bottom:1px solid;">
+					<button data-role="button" data-theme="a"><h2>RSVP</h2></button>
+				</div>
+				<div id="event_subscribe" style="border-top:1px solid;border-bottom:1px solid;">
+					<button data-role="button" data-theme="a"><h2>Contact</h2></button>
+				</div>
+
+				<div id="event_subscribe" style="border-top:1px solid;border-bottom:1px solid;">
+					<button data-role="button" data-theme="a"><h2>Subscribe</h2></button>
+				</div>
+	          </div>
 	        </div>
 
 	        <!--List result Panel-->
@@ -93,15 +113,14 @@
 	        	<h3>Search Filter</h3>
 	  			<fieldset data-role="controlgroup">
 	    			<legend>Date:</legend>
-	    			<input type="radio" name="radio-choice" id="radio-choice-1" value="past" checked="checked" />
-	    				<label for="radio-choice-1">Past</label>
-	    			<input type="radio" name="radio-choice" id="radio-choice-2" value="today" />
-	    				<label for="radio-choice-2">Today</label> 
-	    			<input type="radio" name="radio-choice" id="radio-choice-3" value="week" />
-	    				<label for="radio-choice-3">This Week</label>
-	    			<input type="radio" name="radio-choice" id="radio-choice-4" value="future" />
-	    				<label for="radio-choice-4">Future</label>
-	          		<input type="text" placeholder="Enter a Date"/>
+	    			<input type="radio" name="filter-rdate" id="radio-past" value="Past" />
+	    				<label for="radio-past">Past</label>
+	    			<input type="radio" name="filter-rdate" id="radio-today" value="Today" />
+	    				<label for="radio-today">Today</label> 
+	    			<input type="radio" name="filter-rdate" id="radio-week" value="This Week" />
+	    				<label for="radio-week">This Week</label>
+	    			<input type="radio" name="filter-rdate" id="radio-future" value="Future" checked="checked"/>
+	    				<label for="radio-future">Future</label>
 	  			</fieldset>
 	              
 	        	<fieldset data-role="controlgroup">
@@ -113,7 +132,7 @@
 	        	<fieldset data-role="controlgroup">
 	    			<legend>Event type:</legend>
 	    			<input type="checkbox" name="param-choice" id="sponsor-choice" checked="checked" />
-	    				<label for="sponsor-choice">Sponsored</label>
+	    				<label id="sponsor-choice" for="sponsor-choice">Sponsored</label>
 	    			<input type="checkbox" name="param-choice" id="user-choice" checked="checked"/>
 	    				<label for="user-choice">User</label>      
 	  			</fieldset>
@@ -197,26 +216,4 @@
 		<li><a class="nav-panel-profile-btn zocial twitter" href="" id="login_twitter" >Twitter</a></li>
 		<li><a class="nav-panel-profile-btn zocial github" href="" id="login_github" >github</a></li>
 	{{/if}}
-</template>
-
-<template name="quick_event">
-	<div id="header" style="border-bottom:1px solid;">
-    	<h3 id="event_title"></h3>
-    </div>
-    <div id="event_card" style="min-height:250px">
-    	<img src="no_profile.jpeg" height="150" style="float:left" id="event_image">
-		<h4>Description:</h4>
-		<p id="event_description"></p>
-    </div>
-	
-	<div id="event_tickets" style="border-top:1px solid;border-bottom:1px solid;">
-		<button data-role="button" data-theme="a"><h2>RSVP</h2></button>
-	</div>
-	<div id="event_subscribe" style="border-top:1px solid;border-bottom:1px solid;">
-		<button data-role="button" data-theme="a"><h2>Contact</h2></button>
-	</div>
-
-	<div id="event_subscribe" style="border-top:1px solid;border-bottom:1px solid;">
-		<button data-role="button" data-theme="a"><h2>Subscribe</h2></button>
-	</div>
 </template>

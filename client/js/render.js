@@ -122,9 +122,6 @@ Template.page.rendered = function(){
 
       });
 
-      $.get('quick_event.html', function(data){
-        event_boiler_plate = data;
-      });
       $.get('list_element.html', function(data){
         list_element_plate = data;
       });
@@ -135,7 +132,7 @@ Template.page.rendered = function(){
       $('#searchInput').keypress(function(e) {
         if(event.keyCode === 13){
           e.preventDefault();
-          if($('#searchInput').val().length>0){
+          if( ($('#searchInput').val().length>0) && ($('#sponsor-choice').is(':checked') )){
             $('#searchInput').blur();
             $('#event-panel').panel( "close" );
             map.setZoom(10);
@@ -144,38 +141,45 @@ Template.page.rendered = function(){
             $('#list-result').empty();
             //---Eventful query parameters
             userLatLng = map.getCenter().lat+","+map.getCenter().lng;
-            var oArgs = { app_key: "sj98RZjS2GJJGhhH", keywords: $('#searchInput').val(), page_size: 200, location:userLatLng, within:5}; 
+            var oArgs = { app_key: "sj98RZjS2GJJGhhH", keywords: $('#searchInput').val(), date: $('input[name="filter-rdate"]:checked').val(), page_size: 100, location:userLatLng, within:5};
+
             //---Make an Eventful API call and process the data in the callback function
             EVDB.API.call("/events/search", oArgs, function(oData) {          
               console.log(oData.total_items);
-              if(oData.total_items<200)
-              for (i=0;i<((oData.total_items<200) ? oData.total_items : 200);i++){
-                try{
-                  var evIcon = L.icon({
-                    iconUrl: 'sponsored_event_marker.png',
-                    iconAnchor: [12,41]
-                  });
-                  var venue_address = (oData.events.event[i].venue_address) ? oData.events.event[i].venue_address : 'Not Defined';
-                  var event_title = (oData.events.event[i].title) ? oData.events.event[i].title : 'Not Defined';
-                  var event_lat = oData.events.event[i].latitude;
-                  var event_long = oData.events.event[i].longitude;
-                  var popupDesc = "<strong>"+event_title+"</strong></br>"+
-                             "<strong>Address:</strong> "+venue_address+"</br>";
-                  var eventButton;
-                  
-                  //---I have to pass in the current venue_address, event_title, etc. into a function so that the popups don't all share the same values for those variables and instead we get deep copies. Some OP stuff right here...
-                  (function(eventData){
-                    eventButton = $("<button type='button' data-role='button'>Event Page</button>").click(function(e){
-                      displayEvent(event_boiler_plate,eventData,'#event-panel','#event-result');
-                    })[0];
-                  })(oData.events.event[i]);
-                  
-                  var div = $('<div />').html(popupDesc).append(eventButton)[0];
-                  L.marker([event_lat, event_long], {icon: evIcon}).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(sponsoredEventsLayer);
 
-                  //sponsored_results.push(oData.events.event[i]);
-                  addListEvent(list_element_plate,oData.events.event[i],'#list-panel','#list-result',i);
-                  
+              for (i=0;i<( (oData.total_items<100)?oData.total_items:100 );i++){
+                try{
+                  var eArgs = { app_key: "sj98RZjS2GJJGhhH", id: oData.events.event[i].id};
+                  EVDB.API.call('/events/get',eArgs,function(eData){
+                    var evIcon = L.icon({
+                      iconUrl: 'sponsored_event_marker.png',
+                      iconAnchor: [12,41]
+                    });
+                    var address = (eData.address) ? eData.address : 'Not Defined';
+                    var title = (eData.title) ? eData.title : 'Not Defined';
+                    var lat = eData.latitude;
+                    var lng = eData.longitude;
+                    var description = (eData.description) ? eData.description : 'No Description';
+
+                    var popupDesc = "<strong>"+title+"</strong></br>"+
+                               "<strong>Address:</strong> "+address+"</br>";
+                    var eventButton;
+                    //---I have to pass in the current venue_address, event_title, etc. into a function so that the popups don't all share the same values for those variables and instead we get deep copies. Some OP stuff right here...
+                    (function(evData){
+                      eventButton = $("<button type='button' data-role='button'>Event Page</button>").click(function(e){
+
+                        Session.set("selected",{title:evData.title, description:evData.description, lat:evData.latitude, lng:evData.longitude, images:evData.images});
+                        $('#event-panel').panel('open');
+
+                      })[0];
+                    })( eData );
+                    
+                    var div = $('<div />').html(popupDesc).append(eventButton)[0];
+                    L.marker([lat, lng], {icon: evIcon}).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(sponsoredEventsLayer);
+
+                    //sponsored_results.push(oData.events.event[i]);
+                    addListEvent(list_element_plate,eData,'#list-panel','#list-result',eData.id);
+                    });
                 }catch(e){
                   console.log("Eventful oData item processing error.")
                 }
@@ -233,6 +237,8 @@ Template.page.rendered = function(){
           iconUrl: 'my_user_event_marker.png',
           iconAnchor: [12,41]
   });
+
+
   Deps.autorun(function(){
     userEventsLayer.clearLayers();
     events = Parties.find().fetch();
@@ -243,28 +249,15 @@ Template.page.rendered = function(){
 
       (function(eventData){
         eventButton = $("<button type='button' data-role='button'>Event Page</button>").click(function(e){
+          Session.set("selected",{title:eventData.title, description:eventData.description, lat:eventData.lat, lng:eventData.lng});
           $('#event-panel').panel('open');
-          $('#event-result').empty();
-          $('#event-result').append(event_boiler_plate);
-          //---Update the panel so that the event info can appear
-          $('#event_title').html(eventData.title);
-          $('#event_description').html(eventData.description);
-
-          $('#event-panel').trigger( "updatelayout" );
-          //---Re-initialize the panel-result div so that jQuery mobile can apply its styling for the contents within
-          $('#event-result').trigger("create");
         
         })[0];
       })(events[i]);
 
       var div = $('<div />').html(popupDesc).append(eventButton)[0];
 
-      var ev;
-      if(Meteor.userId()===events[i].owner){
-        var ev = L.marker([events[i].lat, events[i].lng], {icon: myUserIcon}).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(userEventsLayer);
-      }else{
-        var ev = L.marker([events[i].lat, events[i].lng], {icon: userIcon}).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(userEventsLayer);
-      }
+      var ev = L.marker([events[i].lat, events[i].lng], {icon: ((Meteor.userId()===events[i].owner)? myUserIcon:userIcon) }).bindPopup(div,{offset: new L.Point(0,-15)}).addTo(userEventsLayer);
       
       //Add some attributes to our event on the map for reference later
       ev["title"] = events[i].title;
@@ -272,54 +265,44 @@ Template.page.rendered = function(){
       ev["lng"] = events[i].lng;
     }
   });
-
-
-function displayEvent(html_plate,eventData,panel,panel_content){
-  var venue_address = (eventData.venue_address) ? eventData.venue_address : 'Not Defined';
-  var event_title = (eventData.title) ? eventData.title : 'Not Defined';
-  var start_time = (eventData.start_time) ? eventData.start_time : 'Not Defined';
-  var end_time = (eventData.end_time) ? eventData.end_time : 'Not Defined';
-  var description = (eventData.description) ? eventData.description : 'No Description';
-  var cal_count = (eventData.calendar_count) ? eventData.calendar_count : 0;
-  var url = (eventData.url) ? eventData.url : 0;
-  $(panel).panel('open');
-  $(panel_content).empty();
-  $(panel_content).append(html_plate);
-
-  //---Update the panel so that the event info can appear
-  $('#event_title').html(event_title);
-  $('#event_description').html(description);
-
-  $(panel).trigger( "updatelayout" );
-  //---Re-initialize the panel-result div so that jQuery mobile can apply its styling for the contents within
-  $(panel_content).trigger("create");
-
-}
-
-function addListEvent(html_plate,eventData,panel,panel_content,id){
-  var venue_address = (eventData.venue_address) ? eventData.venue_address : 'Not Defined';
-  var event_title = (eventData.title) ? eventData.title : 'Not Defined';
-  var start_time = (eventData.start_time) ? eventData.start_time : 'Not Defined';
-  var end_time = (eventData.end_time) ? eventData.end_time : 'Not Defined';
-  var description = (eventData.description) ? eventData.description : 'No Description';
-  var cal_count = (eventData.calendar_count) ? eventData.calendar_count : 0;
-  var city_name = (eventData.city_name) ? eventData.city_name : 'Note Defined';
-  var url = (eventData.url) ? eventData.url : 0;
-  $(panel_content).append(html_plate);
-  $('#event_card').attr("href",url);
-  $('#event_card').attr('id',id);
-  var currCard = '#'+id;
-
-  //---Update the panel so that the event info can appear
-  $(currCard).find('#list_title').html(event_title);
-  $(currCard).find('#list_description').append(venue_address);
-  $(currCard).find('#list_description').append(', '+city_name);
-  $(currCard).find('#list_description').append('</br>Cal count: '+ cal_count);
-  $(panel).trigger( "updatelayout" );
-  //---Re-initialize the panel-result div so that jQuery mobile can apply its styling for the contents within
-  $(panel_content).trigger("create");
   
-}
+  Deps.autorun(function(){
+    if(Session.get('selected')){
+      var selectedEvent = Session.get("selected");
+      $('#event_title').empty().append(selectedEvent.title);
+      $('#event_description').empty().append(selectedEvent.description);
+      $('#event_image').attr('src',((selectedEvent.images)?selectedEvent.images.image.url:'no_profile.jpeg') );
+      
+    }
+  });
+
+
+
+  function addListEvent(html_plate,eventData,panel,panel_content,id){
+    var venue_address = (eventData.address) ? eventData.address : 'Not Defined';
+    var event_title = (eventData.title) ? eventData.title : 'Not Defined';
+    var start_time = (eventData.start_time) ? eventData.start_time : 'Not Defined';
+    var end_time = (eventData.end_time) ? eventData.end_time : 'Not Defined';
+    var description = (eventData.description) ? eventData.description : 'No Description';
+    var city_name = (eventData.city) ? eventData.city : 'Note Defined';
+    var url = (eventData.url) ? eventData.url : 0;
+    $(panel_content).append(html_plate);
+    $('#event_card').attr("href",url);
+    $('#event_card').attr('id',id);
+    var currCard = '#'+id;
+
+    //---Update the panel so that the event info can appear
+    $(currCard).find('#list_title').html(event_title);
+    $(currCard).find('#list_description').append(venue_address);
+    $(currCard).find('#list_description').append(', '+city_name);
+    if(eventData.images){
+      $(currCard).find('#list_image').attr('src',eventData.images.image.url);
+    }
+    $(panel).trigger( "updatelayout" );
+    //---Re-initialize the panel-result div so that jQuery mobile can apply its styling for the contents within
+    $(panel_content).trigger("create");
+    
+  }
   
   
 };
